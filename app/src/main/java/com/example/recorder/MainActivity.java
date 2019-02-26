@@ -76,21 +76,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //start record
     private void startRecord() {
         if (mRecorder == null) {
-            File dir = new File(Environment.getExternalStorageDirectory(), "/sounds");
-            if (!dir.exists()) {
-                dir.mkdir();
-            }
-            File soundFile = new File(dir, System.currentTimeMillis() + ".amr");
-            if (!soundFile.exists()) {
-                try {
-                    soundFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//            File dir = new File(Environment.getExternalStorageDirectory(), "sounds");
+//            if (!dir.exists()) {
+//                dir.mkdir();
+//            }
+//            File soundFile = new File(dir, System.currentTimeMillis() + ".amr");
+//            if (!soundFile.exists()) {
+//                try {
+//                    soundFile.createNewFile();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
-//            fileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-//            fileName += "com/example/record/audiorecordtest.amr";
+            fileName = getExternalCacheDir().getAbsolutePath();
+            fileName += "/audiorecordtest.amr";
 
 
         }
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC); //Set up sound source files
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB); //format setting
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB); //encode setting
-        mRecorder.setOutputFile(soundFile); //output file setting
+        mRecorder.setOutputFile(fileName); //output file setting
 //        mRecorder.setOutputFile(soundFile.getAbsoluteFile()); //output file setting
 
         try {
