@@ -41,6 +41,19 @@
             android:layout_height="wrap_content"
 
             android:text="PLAY STOP" />
+        
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center">
+            <com.example.recorder.DrawView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/view"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

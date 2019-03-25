@@ -3,6 +3,7 @@ package com.example.recorder;
 import android.Manifest;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static String soundFile = null;
     private static String fileName = null;
     MediaRecorder mRecorder;
+    //wave
+    private Visualizer mVisualizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             player.setDataSource(soundFile);
             player.prepare();
+            setupVisualizer();
             player.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
@@ -114,5 +118,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void stopPlaying() {
         player.release();
         player = null;
+    }
+
+    private void setupVisualizer() {
+        final DrawView mVisualizerView = (DrawView) findViewById(R.id.view);
+        mVisualizer = new Visualizer(player.getAudioSessionId());
+        mVisualizer.setCaptureSize(128);
+        final int capture = Visualizer.getMaxCaptureRate()/2;
+        mVisualizer.setDataCaptureListener(
+            new Visualizer.OnDataCaptureListener() {
+                @Override
+                public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
+                    mVisualizerView.updateVisualizer(fft, true);
+                }
+
+                @Override
+                public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
+                    mVisualizerView.updateVisualizer(waveform, false);
+                }
+            }, capture, true, true);
+        mVisualizer.setEnabled(true);
     }
 }
